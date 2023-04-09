@@ -1,0 +1,64 @@
+$default-padding: 16px;
+
+$localWidth: 400px;
+$localHeight: $localWidth / 16 * 9;
+
+.row.room {
+	border-top: 1px solid black;
+	padding-top: 40px;
+
+	.user-list {
+		padding-left: 0px;
+		padding-right: 0px;
+
+		.room-title {
+			padding-left: $default-padding;
+			font-weight: bold;
+		}
+
+		ul {	
+			margin-left: 0px;
+			padding-left: 0px;
+
+			li {
+				padding-left: $default-padding;
+				padding-right: $default-padding;
+				list-style-type: none;
+				height: 40px;
+				line-height: 40px;
+				cursor: pointer;
+
+				&.selected {
+					background: lightgrey;
+				}
+
+				&.streaming {
+					color: green;
+				}
+			}
+		}
+	}
+
+	.stream-content {
+		padding-left: 0px;
+
+		.user-stream-video {
+			width: $localWidth;
+			height: $localHeight;
+		}
+	}
+
+	
+	.local-video {
+		position: fixed;
+
+		width: $localWidth;
+		height: $localHeight;
+		bottom: 16px;
+		right: 16px;
+	}
+}
+
+#start-stream-button {
+	margin-top: 30px;
+}
