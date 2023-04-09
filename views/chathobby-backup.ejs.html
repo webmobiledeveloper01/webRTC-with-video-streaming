@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>ChatHobby.com - Streaming made Easy!</title>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		<meta name="keywords" content="chat, room, irc, free, live, community, chatroom, chatline, service, stream, streaming, voice, audio, video, webcam, cam, talk, social, network, html5, video chat"/>
+		<meta name="description" content="ChatHobby is a free streaming service for all. Browse through the free streams to meet friends or make your own stream. No downloads, no register, no problem. Just be yourself."/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1"/>
+		<meta name="robots" content="noindex, nofollow"/>
+		<meta http-equiv="pragma" content="no-cache"/>
+		<meta name="revisit-after" content="0 day"/>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+		<link rel="apple-touch-icon-precomposed" href="wifi.png"/>
+		<link rel="stylesheet" href="main.min.css">
+		<link rel="icon" href="wifi.png"/>
+		<script src="main.js"></script>
+		<script src='/socket.io/socket.io.js'></script>
+		<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+		<script>
+			var loc = window.location.href+'';
+			if (loc.indexOf('http://')==0) window.location.href = loc.replace('http://','https://');
+			if('<%= page %>' != 'default') var newpage = '<%= page %>';
+		</script>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group">
+					<label for="room-select">Select room</label>
+					<select id="room-select" class="form-control">
+						<option>-</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-md-4 d-table">
+				<button class="btn btn-success" id="start-stream-button">Start Streaming</button>
+			</div>
+		</div>
+
+		<!--- Room Section --->
+		<div class="row room">
+			<div class="col-md-4 user-list">
+				<span class="room-title" id="room-title"></span>
+				<ul id="room-user-list">
+					
+				</ul>
+			</div>
+			<div id="remotestreams" class="col-md-8 stream-content">
+				<video autoplay class="user-stream-video" id="remote-video"></video>
+				<video autoplay muted class="local-video" id="local-video"></video>
+			</div>
+		</div>
+	</div>
+	<script> onloaded(); </script>
+</body>
+</html>
