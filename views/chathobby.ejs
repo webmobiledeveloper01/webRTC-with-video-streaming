@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>ChatHobby.com - Streaming made Easy!</title>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		<meta name="keywords" content="chat, room, irc, free, live, community, chatroom, chatline, service, stream, streaming, voice, audio, video, webcam, cam, talk, social, network, html5, video chat"/>
+		<meta name="description" content="ChatHobby is a free streaming service for all. Browse through the free streams to meet friends or make your own stream. No downloads, no register, no problem. Just be yourself."/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1"/>
+		<meta name="robots" content="noindex, nofollow"/>
+		<meta http-equiv="pragma" content="no-cache"/>
+		<meta name="revisit-after" content="0 day"/>
+		<link rel="stylesheet" type="text/css" media="all" href="chathobby.css"/>
+		<link rel="apple-touch-icon-precomposed" href="wifi.png"/>
+		<link rel="icon" href="wifi.png"/>
+		<script src="main.js"></script>
+		<script src='/socket.io/socket.io.js'></script>
+		<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+		<script>
+			var loc = window.location.href+'';
+			if (loc.indexOf('http://')==0) window.location.href = loc.replace('http://','https://');
+			if('<%= page %>' != 'default') {
+				var newpage = '<%= page %>';
+			}
+		</script>
+</head>
+<body class="innerGlow">
+	<div id="showhome">
+		<div class="wrapper">
+			<header class="page-header">
+				<nav>
+					<h2 class="logo">&nbsp;</h2>
+					<ul>
+						<li class="home-links">Home (<i class="fas fa-home">)</i></li>
+						<li class="home-links" id="openchat">Chat Rooms (<i class="fas fa-users"></i>)</li>
+						<li class="home-links">Blog (<i class="fas fa-signature"></i>)</li>
+						<li class="home-links">FAQ (<i class="fas fa-question"></i>)</li>
+					</ul>
+					<button class="ch-register home-color">Register <i class="far fa-address-card"></i></button>
+				</nav>
+			</header>
+			<main class="page-main">
+				<div>
+					<h1>Streaming made simple. The concepts simple.</h1>
+					<p>One morning, when I woke from my dreams. I had found myself with a vision of free streaming.</p>
+					<p>It wasn't a dream. Its reality, a proper accomplishment.</p>
+				</div>
+			</main>
+			<footer class="page-footer">
+				<small><i class="far fa-copyright home-color"></i> ChatHobby.com 2020. All rights reserved.</small>
+				<ul>
+					<li>
+						<a href="" target="_blank" title="Twitter">
+							<i class="fab fa-twitter"></i>
+						</a>
+					</li>
+					<li>
+						<a href="" target="_blank" title="Instagram">
+							<i class="fab fa-instagram"></i>
+						</a>
+					</li>
+				</ul>
+			</footer>
+		</div>
+	</div>
+	<div id="showloading">
+		<div class="sk-cube-grid">
+			<div class="sk-cube sk-cube1"></div>
+			<div class="sk-cube sk-cube2"></div>
+			<div class="sk-cube sk-cube3"></div>
+			<div class="sk-cube sk-cube4"></div>
+			<div class="sk-cube sk-cube5"></div>
+			<div class="sk-cube sk-cube6"></div>
+			<div class="sk-cube sk-cube7"></div>
+			<div class="sk-cube sk-cube8"></div>
+			<div class="sk-cube sk-cube9"></div>
+		</div>
+	</div>
+	<div id="showrooms">
+		<input type="file" id="thebgfile" onchange="ChatHobby.changePhoto(this)" style="display: none" />
+		<div class="popup devices inneroutter round" id="ch_devices">
+			<div class="" id="ch_loading">
+				<div class="top_loader">
+					Requesting Premission!
+				</div>
+				<div class="loader"></div>
+				<div class="bottom_loader">
+					Loading...<br>
+					To enable streaming with your webcam or microphone.<br>
+					We need permission to use them, approve by selecting “Allow”
+				</div>
+			</div>
+			<div class="" id="ch_prev">
+				<div id="streampreview">
+					<video muted="true" id="ch_previewstream" poster="loading.gif" mouseover="this.controls = true;"></video>
+				</div>
+				<div id="streamoptions">
+					<div id="sharewebcam_section">
+						<select id="chgvideo" onchange="ChatHobby.selectStream()"></select>
+						<select id="chgaudio" onchange="ChatHobby.selectStream()"><option value="mute" selected>No Mic</option></select>
+					</div>
+					<button id="streamersbutton" class="start button theme innerBox round text" align="center" disabled="true">
+						<div>Start Streaming</div>
+					</button>
+					
+					<!--<div id="optinal_video" class="bottomround inneroutter" onclick="getid('sharewebcam_section').style.display='block'" align="center">Webcam</div>-->
+					<!--<div id="optinal_desktop" class="bottomround inneroutter" onclick="ChatHobby.selStream()" align="center">Desktop</div>-->
+					
+					<label style="color: #000; font-size: 12px" for="webc">Webcam</label>
+					<input onclick="whereto='webcam',ChatHobby.selectStream()" checked="checked" id="webc" name="chg_stream" type="radio" value="webcam"/>
+					<label style="color: #000; font-size: 12px" for="desk">Screen</label>
+					<input onclick="whereto='screen',ChatHobby.selStream(),getid('streamersbutton').disabled = true" id="desk" name="chg_stream" type="radio" value="screen"/>
+					
+					<div id="ch_closeprev" class="ch_close themefont">&#10006;</div>
+				</div>
+			</div>
+		</div>
+		<div id="container">
+			<div id="chathobby-header" class="header chathobby-font themefont">
+				<div class="switch" title="Opened" onclick="if(this.title=='Closed') { this.title='Opened'; removeClass(getid('chathobby-header'),'closed'); addClass(getid('chathobby-header'),'opened'); removeClass(getid('live-main-menu'),'header-closed'); removeClass(getid('chat-content'),'header-closed'); } else { this.title='Closed'; removeClass(getid('chathobby-header'),'opened'); addClass(getid('chathobby-header'),'closed'); addClass(getid('live-main-menu'),'header-closed'); addClass(getid('chat-content'),'header-closed'); }">&nbsp;</div>
+				<div class="header-content">
+					<label for="room-select">Room : </label>
+					<select id="room-select" class="form-control">
+					</select>
+					<div id="profile-area" class="profile-area opened">
+						<div class="switch" title="Opened" onclick="if(this.title=='Closed') { this.title='Opened'; removeClass(getid('profile-area'),'closed'); addClass(getid('profile-area'),'opened'); } else { this.title='Closed'; removeClass(getid('profile-area'),'opened'); addClass(getid('profile-area'),'closed'); }">&nbsp;</div>
+						<div class="settings" title="Profile Settings">&nbsp;</div>
+						<input type="file" id="hiddenprofileimage" style="display: none" />
+						<div id="profile-image" class="image outterBox" title="Profile Image">&nbsp;</div>
+						<div id="profile-nickname" class="nickname" title="Nickname">Nickname</div>
+						<div class="friends" title="Friends">
+							<div class="alert-bubble">0</div>
+							&nbsp;
+						</div>
+						<div class="messages" title="Messages">
+							<div class="alert-bubble">0</div>
+							&nbsp;
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="wrapped">
+				<div class="left-content chathobby-font">
+					<div id="start-stream" class="start-stream theme" title="Start Streaming">
+						Start Streaming
+					</div>
+					<div id="live-stream" class="stream-slot">
+						<!--<div id="stream-nickname" class="videonamebox font">Nickname</div>-->
+						<div id="local-close-stream" class="videobox" title="Close">&nbsp;</div>
+						<div class="videobox2 chathobby-font">
+							<div class="video" title="Video">&nbsp;</div>
+							<div class="mic" title="Audio">&nbsp;</div>
+						</div>
+						<video controlsList="nodownload nofullscreen noremoteplayback" muted="true" id="ch_stream" poster="loading.gif"></video>
+					</div>
+					<div id="live-main-menu" class="main-menu themefont">
+						<div id="testing" class="menu-header">
+							<div onclick="removeClass(getid('ch_messages'),'opened'); removeClass(getid('ch_viewers'),'opened'); removeClass(getid('ch_nicknames'),'opened'); addClass(getid('ch_nicknames'),'opened');" id="ch-1-tab" class="tab-1 themehover" title="Users">
+								<div id="alertbubble1" class="alert-bubble color">0</div>
+								&nbsp;
+							</div>
+							<div onclick="removeClass(getid('ch_nicknames'),'opened'); removeClass(getid('ch_messages'),'opened'); removeClass(getid('ch_viewers'),'opened'); addClass(getid('ch_viewers'),'opened');" id="ch-2-tab" class="tab-2 themehover" title="Viewers">
+								<div id="alertbubble2" class="alert-bubble color">0</div>
+								&nbsp;
+							</div>
+							<div onclick="removeClass(getid('ch_viewers'),'opened'); removeClass(getid('ch_messages'),'opened'); addClass(getid('ch_messages'),'opened');" id="ch-3-tab" class="tab-3 themehover" title="PMs">
+								<div id="alertbubble3" class="alert-bubble">0</div>
+								&nbsp;
+							</div>
+							<div class="tab-4 themehover" title="Sort List">&nbsp;</div>
+							<div onclick="removeClass(getid('ch_nicknames'),'opened'); removeClass(getid('ch_search'),'closed'); removeClass(getid('ch_search'),'opened'); addClass(getid('ch_search'),'opened');" class="tab-5 themehover" title="Search List">&nbsp;</div>
+						</div>
+						<div id="ch_search" class="menu-searchs closed">
+							<div class="switch" title="Close Search" onclick="removeClass(getid('ch_search'),'opened'); addClass(getid('ch_search'),'closed'); ">&nbsp;</div>
+							<input id="search-hidden" type="text" style="display: none" /></input>
+							<div id="search-input" class="ch-search-input" contenteditable="true" placeholder="Search List..." spellcheck="true"></div>
+						</div>
+						<div id="ch_messages" class="menu-messages">
+							<!--
+							<div class="menu-nickname" style="counter-increment: tab3;">
+								<div class="mn-gender male" title="Male">&nbsp;</div>
+								<div class="mn-holder font themefont">Demo</div>
+								<div class="mn-controls">
+									<div class="block" title="Block User">&nbsp;</div>
+									<div class="live streaming" title="Live Stream">
+										<div class="private" title="Private Stream">&nbsp;</div>
+									</div>
+								</div>
+							</div>
+							-->
+						</div>
+						<div id="ch_viewers" class="menu-viewers">
+							<!--
+							<div class="menu-nickname" style="counter-increment: tab2;">
+								<div class="mn-gender male" title="Male">&nbsp;</div>
+								<div class="mn-holder font themefont">Demo</div>
+								<div class="mn-controls">
+									<div class="block" title="Block User">&nbsp;</div>
+									<div class="live streaming" title="Live Stream">
+										<div class="private" title="Private Stream">&nbsp;</div>
+									</div>
+								</div>
+							</div>
+							<div class="menu-nickname" style="counter-increment: tab2;">
+								<div class="mn-gender male" title="Male">&nbsp;</div>
+								<div class="mn-holder font themefont">Demo</div>
+								<div class="mn-controls">
+									<div class="block" title="Block User">&nbsp;</div>
+									<div class="live streaming" title="Live Stream">
+										<div class="private" title="Private Stream">&nbsp;</div>
+									</div>
+								</div>
+							</div>
+							-->
+						</div>
+						<div id="ch_nicknames" class="menu-nicknames">
+							<!--
+							<div class="menu-nickname" style="counter-increment: tab1;">
+								<div class="mn-gender male" title="Male">&nbsp;</div>
+								<div class="mn-holder font themefont">Demo</div>
+								<div class="mn-controls">
+									<div class="block" title="Block User">&nbsp;</div>
+									<div class="live streaming" title="Live Stream">
+										<div class="private" title="Private Stream">&nbsp;</div>
+									</div>
+								</div>
+							</div>
+							<div class="menu-nickname">
+								<div class="mn-gender female" title="Female">&nbsp;</div>
+								<div class="mn-holder font themefont">Demo</div>
+								<div class="mn-controls">
+									<div class="block" title="Block User">&nbsp;</div>
+									<div class="live streaming" title="Live Stream">&nbsp;</div>
+								</div>
+							</div>
+							<div class="menu-nickname">
+								<div class="mn-gender shemale" title="Shemale">&nbsp;</div>
+								<div class="mn-holder font themefont">Demo</div>
+								<div class="mn-controls">
+									<div class="block" title="Block User">&nbsp;</div>
+									<div class="live streaming" title="Live Stream">&nbsp;</div>
+								</div>
+							</div>
+							<div class="menu-nickname">
+								<div class="mn-gender couple" title="Couple">&nbsp;</div>
+								<div class="mn-holder font themefont">Demo</div>
+								<div class="mn-controls">
+									<div class="block" title="Block User">&nbsp;</div>
+									<div class="live" title="Not Streaming">&nbsp;</div>
+								</div>
+							</div>
+							-->
+						</div>
+					</div>
+				</div>
+				<div id="chat-content" class="chat-content">
+					<div class="chat-streams">
+						<div id="live-streams" class="activestreams chathobby-font">
+							
+						</div>
+					</div>
+					<div class="chat-header chathobby-font">
+						<div class="chat-pinned theme">
+							<div class="pinned-timestamp" title="00:00 PM">00:00 PM</div>
+							Pinned
+						</div>
+						<div class="chat-pinned-text">Welcome to the Lobby. Type !help for more info.</div>
+					</div>
+					<div id="ch_chatbox" class="chat-relay themefont">
+						
+					</div>
+					<div class="chat-input-area chathobby-font">
+						<div class="chat-input-container">
+							<div class="chat-input">
+								<div id="emoji" style="display: none"></div>
+								<input id="input-hidden" type="text" style="display: none" /></input>
+								<div id="input" class="ch-input" contenteditable="true" placeholder=" Start Chatting..." tabindex="0" spellcheck="true"></div>
+								<div id="send-extra" class="side themehover">
+									<div class="switch" title="Open Extra" onclick="if(this.title=='Close Extra') { this.title='Open Extra';  removeClass(getid('send-extra'),'extra'); } else { this.title='Close Extra'; addClass(getid('send-extra'),'extra'); }">&nbsp;</div>
+									<div class="color">
+										<div class="color-box" style="background-color: red" 		title="Red - Font Color">&nbsp;</div>
+										<div class="color-box" style="background-color: darkred" 	title="Dark Red - Font Color">&nbsp;</div>
+										<div class="color-box" style="background-color: black" 		title="Black - Font Color">&nbsp;</div>
+										<div class="color-box" style="background-color: darkgrey" 	title="Dark Grey - Font Color">&nbsp;</div>
+										<div class="color-box" style="background-color: grey" 		title="Grey - Font Color">&nbsp;</div>
+										<div class="color-box" style="background-color: lightgrey" 	title="Light Grey - Font Color">&nbsp;</div>
+										<div class="color-box" style="background-color: lightgreen" title="Light Green - Font Color">&nbsp;</div>
+										<div class="color-box" style="background-color: green" 		title="Green - Font Color">&nbsp;</div>
+										<div class="color-box" style="background-color: darkgreen" 	title="Dark Green - Font Color">&nbsp;</div>
+										<div class="color-box" style="background-color: deeppink" 	title="Deep Pink - Font Color">&nbsp;</div>
+										<div class="color-box" style="background-color: pink" 		title="Pink - Font Color">&nbsp;</div>
+										<div class="color-box" style="background-color: purple" 	title="Purple - Font Color">&nbsp;</div>
+									</div>
+									<div id="chathobby_send" class="send">Send</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script> onloaded(); </script>
+</body>
+</html>
