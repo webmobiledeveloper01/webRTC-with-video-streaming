@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>WebRTC</title>
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+	<link rel="stylesheet" href="main.min.css">
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group">
+					<label for="room-select">Select room</label>
+					<select id="room-select" class="form-control">
+						<option>-</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-md-4 d-table">
+				<button class="btn btn-success" id="start-stream-button">Start Streaming</button>
+			</div>
+		</div>
+
+		<!--- Room Section --->
+		<div class="row room">
+			<div class="col-md-4 user-list">
+				<span class="room-title" id="room-title"></span>
+				<ul id="room-user-list">
+					
+				</ul>
+			</div>
+			<div class="col-md-8 stream-content">
+				<video autoplay class="user-stream-video" id="remote-video"></video>
+				<video autoplay muted class="local-video" id="local-video"></video>
+			</div>
+		</div>
+	</div>
+
+	<script src="socket.io.js"></script>
+	<script src="main.js"></script>
+</body>
+</html>
